@@ -6,7 +6,7 @@ import { useCart } from '../contexts/CartContext';
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { product, loading, error } = useProduct(id || '');
-  const { addItem, state, incrementQuantity, decrementQuantity, clearCart } = useCart();
+  const { addItem, state, incrementQuantity, decrementQuantity} = useCart();
   const navigate = useNavigate();
 
   const cartItem = product
