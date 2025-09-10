@@ -12,9 +12,9 @@ const ProductDetail = () => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const navigate = useNavigate();
 
-  const cartItem = product
-    ? state.items.find((item) => item.id === product.id)
-    : null;
+  // const cartItem = product
+  //   ? state.items.find((item) => item.id === product.id)
+  //   : null;
 
   const handleAddToCart = () => {
     if (product) {
