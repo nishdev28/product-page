@@ -14,7 +14,7 @@ interface CartItem extends Product {
 interface CartState {
   items: CartItem[];
   total: number;
-  orderPlaced:boolean;
+  orderPlaced: boolean;
 }
 
 type CartAction =
@@ -99,14 +99,20 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
     case 'DECREMENT_QUANTITY': {
       const item = state.items.find((item) => item.id === action.payload);
-      if (!item || item.quantity <= 1) return state;
+      if (!item) return state;
 
+      if (item.quantity === 1) {
+        return {
+          ...state,
+          items: state.items.filter((item) => item.id !== action.payload),
+          total: state.total - item.price,
+        };
+      }
       const updatedItems = state.items.map((item) =>
         item.id === action.payload
           ? { ...item, quantity: item.quantity - 1 }
           : item
       );
-
       return {
         ...state,
         items: updatedItems,
@@ -114,24 +120,25 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       };
     }
 
-    case 'CLEAR_CART':{
+    case 'CLEAR_CART': {
       return {
         items: [],
         total: 0,
         orderPlaced: false,
-      };}
+      };
+    }
 
-    case 'PLACE_ORDER':{
-        return {
-          ...state,
-          orderPlaced: true,
-        };
+    case 'PLACE_ORDER': {
+      return {
+        ...state,
+        orderPlaced: true,
+      };
     }
     case 'RESET_ORDER':
-  return {
-    ...state,
-    orderPlaced: false
-  };
+      return {
+        ...state,
+        orderPlaced: false,
+      };
     default:
       return state;
   }
@@ -140,7 +147,11 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 export const CartProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [state, dispatch] = useReducer(cartReducer, { items: [], total: 0, orderPlaced: false });
+  const [state, dispatch] = useReducer(cartReducer, {
+    items: [],
+    total: 0,
+    orderPlaced: false,
+  });
 
   const addItem = (product: Product) => {
     dispatch({ type: 'ADD_ITEM', payload: product });
@@ -165,7 +176,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
   const placeOrder = () => {
     dispatch({ type: 'PLACE_ORDER' });
   };
-  
+
   const getCartCount = () => {
     return state.items.reduce((total, item) => total + item.quantity, 0);
   };

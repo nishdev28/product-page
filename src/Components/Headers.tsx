@@ -1,10 +1,13 @@
 // src/components/Header.tsx
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
 
 const Header = () => {
   const { getCartCount } = useCart();
   const cartCount = getCartCount();
+  const { state } = useWishlist();
+  const wishlistCount = state.items.length;
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-10">
@@ -18,6 +21,14 @@ const Header = () => {
             className="px-3 py-1 rounded-md text-gray-600 hover:text-indigo-700"
           >
             Products
+          </Link>
+          <Link to="/wishlist" className="relative text-gray-600">
+            <i className="fa-solid fa-heart text-xl"></i>
+            {wishlistCount > 0 && (
+              <span className=" absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
           <Link to="/cart" className="relative text-gray-600">
             <i className="fa-solid fa-cart-shopping text-xl"></i>

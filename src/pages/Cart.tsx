@@ -1,16 +1,20 @@
 // src/pages/Cart.tsx
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Cart = () => {
-  const { state, removeItem, incrementQuantity, decrementQuantity, clearCart, placeOrder, resetOrder } = useCart();
+  const {
+    state,
+    removeItem,
+    incrementQuantity,
+    decrementQuantity,
+    clearCart,
+    placeOrder,
+    resetOrder,
+  } = useCart();
   const navigate = useNavigate();
   const [showSuccess, setShowSuccess] = useState(false);
-
-  useEffect(() => {
-    resetOrder();
-  }, [resetOrder]);
 
   const handleCheckout = () => {
     placeOrder();
@@ -31,9 +35,12 @@ const Cart = () => {
           <div className="text-green-500 text-6xl mb-4">
             <i className="fa-solid fa-check-circle"></i>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Yay! Your order is placed! 🎉</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Yay! Your order is placed! 🎉
+          </h2>
           <p className="text-gray-600 mb-6">
-            Thank you for your purchase. You will receive a confirmation email shortly.
+            Thank you for your purchase. You will receive a confirmation email
+            shortly.
           </p>
           <button
             onClick={handleContinueShopping}
@@ -115,7 +122,6 @@ const Cart = () => {
             </div>
           </div>
         ))}
-
         <div className="p-4 flex justify-between items-center">
           <div className="text-xl font-bold">
             Total: ${state.total.toFixed(2)}
@@ -128,7 +134,7 @@ const Cart = () => {
             >
               Clear Cart
             </button>
-            <button 
+            <button
               onClick={handleCheckout}
               className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
             >
